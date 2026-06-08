@@ -1,48 +1,64 @@
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import https from 'https';
+import { parseGerritResponse } from './gerrit-utils.js';
 
 const execAsync = promisify(exec);
 
 const COLOR = {
-  reset: "\x1b[0m", green: "\x1b[32m", red: "\x1b[31m",
-  cyan: "\x1b[36m", yellow: "\x1b[33m", gray: "\x1b[90m", bold: "\x1b[1m"
+  reset: "\x1b[0m",
+  green: "\x1b[32m",
+  cyan: "\x1b[36m",
+  yellow: "\x1b[33m",
+  bold: "\x1b[1m"
 };
 
-// Función para peticiones reales a la API
+// Función corregida y adaptada para usar nuestro limpiador de Gerrit
 async function obtenerDatosRemotos(host, path) {
   return new Promise((resolve, reject) => {
-    https.get(`https://${host}${path}`, (res) => {
-      let data = '';
-      res.on('data', (c) => data += c);
-      res.on('end', () => resolve(JSON.parse(data)));
-    }).on('error', reject);
+    const options = {
+      hostname: host,
+      path: path,
+      method: 'GET',
+      headers: { 'Accept': 'application/json' }
+    };
+
+    https.get(options, (res) => {
+      let rawData = '';
+      res.on('data', (chunk) => { rawData += chunk; });
+      res.on('end', async () => {
+        try {
+          // Creamos un objeto de respuesta simulado para reutilizar nuestra función limpia
+          const fakeResponse = { text: async () => rawData };
+          const cleanJson = await parseGerritResponse(fakeResponse);
+          resolve(cleanJson);
+        } catch (e) {
+          reject(new Error(`Error al parsear JSON de Gerrit: ${e.message}`));
+        }
+      });
+    }).on('error', (err) => {
+      reject(err);
+    });
   });
 }
 
 async function ejecutarSincronizacion() {
   console.clear();
-  console.log(`${COLOR.bold}${COLOR.yellow}=== [ (ra) SINCRO-NODO ACTIVO ] ===${COLOR.reset}\n`);
-
+  console.log(`${COLOR.bold}${COLOR.cyan}=== Iniciando Monitor RaPulse ===${COLOR.reset}\n`);
+  
   try {
     // 1. Escaneo Local
-    const { stdout } = await execAsync('git branch --format="%(refname:short)"');
-    const ramasLocales = stdout.trim().split('\n');
-    console.log(`${COLOR.cyan}[+] Ramas locales detectadas: ${ramasLocales.length}${COLOR.reset}`);
-
-    // 2. Consulta Remota (Usaremos un endpoint de prueba público para validar)
-    console.log(`${COLOR.yellow}[+] Consultando estado remoto...${COLOR.reset}`);
-    // Aquí integraremos tu host real de Gerrit cuando lo tengas
-    const datosRemotos = await obtenerDatosRemotos('jsonplaceholder.typicode.com', '/todos/1');
-    
-    console.log(`${COLOR.green}✓ Sincronización exitosa con servidor externo.${COLOR.reset}`);
-    console.log(`  Datos recibidos: ${datosRemotos.title.slice(0, 20)}...`);
-
+    console.log(`${COLOR.yellow}[1] Ejecutando escaneo local...${COLOR.reset}`);
+    const { stdout } = await execAsync('git status --porcelain');
+    if (stdout) {
+      console.log(`${COLOR.green}Cambios locales detectados:${COLOR.reset}\n${stdout}`);
+    } else {
+      console.log(`${COLOR.green}Árbol de trabajo limpio.${COLOR.reset}`);
+    }
   } catch (error) {
-    console.error(`${COLOR.red}[!] Error de red:${COLOR.reset} ${error.message}`);
+    console.error(`${COLOR.reset}Error en la sincronización:`, error);
   }
 }
 
-// Bucle de sincronización cada 60s
+// Ejecutar el monitor
 ejecutarSincronizacion();
-setInterval(ejecutarSincronizacion, 60000);
