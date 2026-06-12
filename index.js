@@ -3,20 +3,17 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// Configuración de rutas nativas en ES Modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// 1. CONFIGURACIÓN CENTRALIZADA CON FILTRO AVANZADO MULTIMEDIA
+// CONFIGURACIÓN CON AUDITORÍA DE LABELS ACTIVADA
 const CONFIG = {
     GERRIT_HOST: 'review.lineageos.org',
-    ENDPOINT: '/changes/?q=project:LineageOS/android_external_v4l2_codec2+status:open&n=5',
+    // Buscamos parches abiertos en el codec e inyectamos &o=LABELS para leer las votaciones
+    ENDPOINT: '/changes/?q=project:LineageOS/android_external_v4l2_codec2+status:open&n=5&o=LABELS',
     STATE_FILE: path.join(__dirname, 'state.json')
 };
 
-/**
- * Motor de red asíncrono optimizado con huella digital móvil segura (Chrome-mobile-es-419)
- */
 function consultarGerrit(endpoint) {
     return new Promise((resolve, reject) => {
         const options = {
@@ -36,30 +33,17 @@ function consultarGerrit(endpoint) {
             let data = '';
             res.on('data', (chunk) => { data += chunk; });
             res.on('end', () => {
-                if (res.statusCode !== 200) {
-                    return reject(new Error(`Error de servidor remoto: HTTP ${res.statusCode}`));
-                }
+                if (res.statusCode !== 200) return reject(new Error(`HTTP ${res.statusCode}`));
                 try {
-                    // Sanitización obligatoria del prefijo mágico de Gerrit para evitar quiebres de JSON
                     const magicPrefix = ")]}'\n";
-                    let cleanData = data;
-                    if (data.startsWith(magicPrefix)) {
-                        cleanData = data.substring(magicPrefix.length);
-                    } else if (data.startsWith(")]}'")) {
-                        cleanData = data.substring(4);
-                    }
+                    let cleanData = data.startsWith(magicPrefix) ? data.substring(magicPrefix.length) : data;
                     resolve(JSON.parse(cleanData));
-                } catch (e) {
-                    reject(new Error(`Fallo en el parseo estructural del JSON: ${e.message}`));
-                }
+                } catch (e) { reject(new Error(`JSON Error: ${e.message}`)); }
             });
         }).on('error', (err) => reject(err));
     });
 }
 
-/**
- * Guarda el latido de la telemetría local en el archivo de estado
- */
 function registrarEstadoTelemetria(ultimoCambioId, totalCambios) {
     const pulso = {
         origen: "RaPulse_Master_Index",
@@ -71,36 +55,41 @@ function registrarEstadoTelemetria(ultimoCambioId, totalCambios) {
     fs.writeFileSync(CONFIG.STATE_FILE, JSON.stringify(pulso, null, 2));
 }
 
-/**
- * Flujo Principal Orquestador
- */
 async function iniciarCicloRa() {
     const horaActual = new Date().toLocaleTimeString();
-    console.log(`☀️ [${horaActual}] Consultando LineageOS (Filtro v4l2_codec2)...`);
+    console.log(`☀️ [${horaActual}] Consultando Auditoría en LineageOS...`);
 
     try {
         const cambios = await consultarGerrit(CONFIG.ENDPOINT);
-
         if (!cambios || cambios.length === 0) {
-            console.log("✅ No hay cambios abiertos actualmente para este filtro en LineageOS.");
-            registrarEstadoTelemetria(null, 0);
+            console.log("✅ No hay cambios abiertos para este filtro.");
             return;
         }
 
-        console.log(`✅ Conexión exitosa. Mostrando los ${cambios.length} cambios más recientes:\n`);
+        console.log(`✅ Conexión exitosa. Monitoreando ${cambios.length} cambios activos:\n`);
 
         cambios.forEach((cambio, index) => {
             console.log(`   ${index + 1}. [${cambio.project.split('/').pop()}]`);
-            console.log(`      Asunto: ${cambio.subject}`);
-            console.log(`      Creado por: ${cambio.owner ? (cambio.owner.name || 'Anónimo') : 'Anónimo'}`);
-            console.log(`      URL: https://review.lineageos.org/c/${cambio._number}\n`);
+            console.log(`      Asunto:    ${cambio.subject}`);
+            
+            // Análisis sintáctico del sistema de votación de Gerrit
+            const cr = cambio.labels && cambio.labels['Code-Review'];
+            let votoValue = '⏳ Sin votos (Pendiente de revisión)';
+            
+            if (cr) {
+                if (cr.approved) votoValue = '👑 +2 (Aprobación Máxima - Listo para Fusionar)';
+                else if (cr.recommended) votoValue = '👍 +1 (Recomendado / Voto Positivo)';
+                else if (cr.disliked) votoValue = '⚠️ -1 (Falta refactorizar / Cambios sugeridos)';
+                else if (cr.rejected) votoValue = '❌ -2 (Bloqueado por un revisor)';
+            }
+
+            console.log(`      Auditoría: ${votoValue}`);
+            console.log(`      URL:       https://review.lineageos.org/c/${cambio._number}\n`);
         });
 
-        const primerCambio = cambios[0];
-        registrarEstadoTelemetria(primerCambio.change_id, cambios.length);
-
+        registrarEstadoTelemetria(cambios[0].change_id, cambios.length);
     } catch (error) {
-        console.log(`❌ Error crítico en el ciclo activo: ${error.message}`);
+        console.log(`❌ Error: ${error.message}`);
     }
 }
 
