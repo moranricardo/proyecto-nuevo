@@ -1,4 +1,4 @@
-const { auditarLineasAccesibilidad } = require('./accessibility_audit');
+const { auditarLineasAccesibilidad } = require('./accessibility_audit.cjs');
 
 function ejecutarConWatchdog(tarea, tiempoMaximoMs) {
     const timeout = setTimeout(() => {
