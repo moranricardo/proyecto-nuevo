@@ -2,12 +2,14 @@ name: ☀️ Ra Pulse CI
 
 on:
   schedule:
+    # Se ejecuta cada 15 minutos
     - cron: '*/15 * * * *'
-  workflow_dispatch:
+  workflow_dispatch: # Permite ejecución manual desde la app
 
 jobs:
   monitor:
     runs-on: ubuntu-latest
+    # Timeout global por si todo el contenedor intenta entrar en bucle
     timeout-minutes: 5 
     
     steps:
@@ -21,7 +23,13 @@ jobs:
           cache: 'npm'
 
       - name: 🛠️ Instalar dependencias
+        # El flag --silent evita que npm intente abrir barras de progreso interactivas
         run: npm ci --prefer-offline --no-audit --no-fund --silent < /dev/null
 
       - name: 📡 Ejecutar Motor de Red Ra Pulse
-        run: node ra_pulse_bridge.js < /dev/null
+        # El almacén atrapa-bucles intercepta cualquier prompt de red colgado
+        run: node ra_pulse_bridge.cjs < /dev/null
+
+      - name: 🧹 Ejecutar Script de Mantenimiento
+        # Forzamos a que el script de mantenimiento muera si se queda congelado
+        run: node mantenimiento.js < /dev/null
