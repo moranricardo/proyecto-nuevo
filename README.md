@@ -1,4 +1,107 @@
-# proyecto-nuevo
+# 🚀 Reporte de Estado - RA PULSE
+### Última actualización: 6/13/2026, 2:12:12 PM
+Se han detectado 99 nuevos parches listos para fusionar (+2).
 
-Dashboard de monitoreo en tiempo real: integra estado local de Git y seguimiento de cambios de LineageOS Gerrit mediante API.
+## Lista de Cambios
+- **[Refactor AppFunction scope from String to Int]** - Proyecto: `platform/frameworks/support`
+- **[Omit enabledByDefault element from AppFunctionSignature XML generation]** - Proyecto: `platform/frameworks/support`
+- **[docs(foundation): clean up KDocs for BasicText and BasicTextField]** - Proyecto: `platform/frameworks/support`
+- **[docs(ui-text): clean up KDocs for core Text APIs]** - Proyecto: `platform/frameworks/support`
+- **[Migrate CameraPipe's AndroidImage to delegate to camera-common.]** - Proyecto: `platform/frameworks/support`
+- **[Add API for finished WorkMetricsInfo Flow]** - Proyecto: `platform/frameworks/support`
+- **[Migrate compose ui-android-stubs to use JSpecify annotations]** - Proyecto: `platform/frameworks/support`
+- **[ANDROID: gki_defconfig: Enable hard lockup detector]** - Proyecto: `kernel/common`
+- **[Introduce movable modifier overload with movePolicy]** - Proyecto: `platform/frameworks/support`
+- **[Update golden images (auto-generated from Scuba): invocation I33100010546567528]** - Proyecto: `platform/frameworks/support-golden`
+- **[Dont recurse ComplicationData deeply when unmarshalling]** - Proyecto: `platform/frameworks/support`
+- **[Refactor XPropertyElement / XFieldElement]** - Proyecto: `platform/frameworks/support`
+- **[Importing prebuilts]** - Proyecto: `platform/prebuilts/androidx/internal`
+- **[Updating docs-public/build.gradle]** - Proyecto: `platform/frameworks/support`
+- **[Fix NaN issues and improve numerical stability in math library]** - Proyecto: `platform/frameworks/support`
+- **[ANDROID: mm: add vendor hook to track page cache reads]** - Proyecto: `kernel/common`
+- **[ANDROID: GKI: update symbol list for galaxy]** - Proyecto: `kernel/common`
+- **[[DeferredTransition] Fix property snap on interrupted handoffs]** - Proyecto: `platform/frameworks/support`
+- **[Set MoveEvent previous pose/scale based on reform event type]** - Proyecto: `platform/frameworks/support`
+- **[[Tuner] Fix testConfigureDemux to handle limited demux devices]** - Proyecto: `platform/cts`
+- **[Restore old `dispose()` behavior.]** - Proyecto: `platform/frameworks/support`
+- **[Add Profiling support for new params]** - Proyecto: `platform/frameworks/support`
+- **[Convert MediaQuery value classes to wrap Int to fix Preview crash]** - Proyecto: `platform/frameworks/support`
+- **[Add tracing dependency to fragment]** - Proyecto: `platform/frameworks/support`
+- **[Trace Fragment lifecycle events]** - Proyecto: `platform/frameworks/support`
+- **[current.ignore clean up]** - Proyecto: `platform/frameworks/support`
+- **[Exclude RequiresOptIn annotation for Ink internal APIs from BCV]** - Proyecto: `platform/frameworks/support`
+- **[Migrates foundation indirect tests to new APIs.]** - Proyecto: `platform/frameworks/support`
+- **[Upgrades Glimmer Tests to new indirect APIs (1/3)]** - Proyecto: `platform/frameworks/support`
+- **[Upgrades Glimmer Tests to new indirect APIs (2/3)]** - Proyecto: `platform/frameworks/support`
+- **[Upgrades Glimmer Tests to new indirect APIs (3/3)]** - Proyecto: `platform/frameworks/support`
+- **[Reduce the amount of ComposeView instances in ResizeComposeViewBenchmark]** - Proyecto: `platform/frameworks/support`
+- **[Optimize `animateValueAsState`]** - Proyecto: `platform/frameworks/support`
+- **[Restructure: Migrate Material 3 components to new design token resolution syntax]** - Proyecto: `platform/frameworks/support`
+- **[small DSL refactor Test: N/A DSL refactor]** - Proyecto: `platform/frameworks/support`
+- **[gbl: Populate EFI info for Linux kernel boot]** - Proyecto: `platform/bootable/libbootloader`
+- **[libstorage: Statically assert GPT entry size is 128 bytes]** - Proyecto: `platform/bootable/libbootloader`
+- **[Merge tag 'android14-5.15.208_r00' into android14-5.15]** - Proyecto: `kernel/common`
+- **[Update golden images (auto-generated from Scuba): invocation I37200010566690971]** - Proyecto: `platform/frameworks/support-golden`
+- **[Enable pthread for host boringssl build]** - Proyecto: `platform/bootable/libbootloader`
+- **[Merge tag 'android12-5.10.257_r00' into android12-5.10]** - Proyecto: `kernel/common`
+- **[Remove references to MR1 in MR2Test]** - Proyecto: `platform/frameworks/support`
+- **[Merge tag 'android13-5.15.208_r00' into android13-5.15]** - Proyecto: `kernel/common`
+- **[Introduce TransformingLazyColumnFirstLayoutItemProvider API]** - Proyecto: `platform/frameworks/support`
+- **[Merge tag 'android15-6.6.139_r00' into android15-6.6]** - Proyecto: `kernel/common`
+- **[Merge tag 'android14-6.1.174_r00' into android14-6.1]** - Proyecto: `kernel/common`
+- **[ANDROID: mm: Bypass PCP for THP CMA pages]** - Proyecto: `kernel/common`
+- **[Merge tag 'android13-5.10.257_r00' into android13-5.10]** - Proyecto: `kernel/common`
+- **[HUD: Integrate dynamic VSYNC graph mode and actual FPS counter]** - Proyecto: `platform/frameworks/opt/gamesdk`
+- **[Relocate core pdf apis to new pdf-core artifact]** - Proyecto: `platform/frameworks/support`
+- **[ANDROID: kleaf: export get_kunit_modules_superset from modules.bzl]** - Proyecto: `kernel/common`
+- **[ANDROID: GKI: Update symbol list for aarch64/desktop]** - Proyecto: `kernel/common`
+- **[ANDROID: GKI: Update symbol list for aarch64/desktop]** - Proyecto: `kernel/common`
+- **[ANDROID: GKI: Update symbol list for aarch64/desktop]** - Proyecto: `kernel/common`
+- **[ANDROID: GKI: Update symbol list for aarch64/desktop]** - Proyecto: `kernel/common`
+- **[ANDROID: GKI: Update symbol list for aarch64/desktop]** - Proyecto: `kernel/common`
+- **[ANDROID: GKI: Update symbol list for aarch64/desktop]** - Proyecto: `kernel/common`
+- **[ANDROID: GKI: Update symbol list for aarch64/desktop]** - Proyecto: `kernel/common`
+- **[ANDROID: usb: gadget: udc: fix UAF in usb_gadget_state_work (KABI-safe)]** - Proyecto: `kernel/common`
+- **[BACKPORT: HID: Use kvzalloc instead of kzalloc in hid_register_field()]** - Proyecto: `kernel/common`
+- **[Migrate tests to use new v2 run*ComposeUiTest APIs]** - Proyecto: `platform/frameworks/support`
+- **[Fix font weight adjustment rendering when adjustment is undefined.]** - Proyecto: `platform/frameworks/support`
+- **[Label ChangedThrows issue as only source breaking]** - Proyecto: `platform/tools/metalava`
+- **[Expose advanced CameraXViewfinder overload and deprecate legacy overload]** - Proyecto: `platform/frameworks/support`
+- **[Rename assertEntityIsChildOf to assertEntityIsDescendantOf.]** - Proyecto: `platform/frameworks/support`
+- **[Remove compatibility-host-provider-preconditions from CtsMediaProviderTestCases]** - Proyecto: `platform/cts`
+- **[Make assertIs* APIs public and add tolerance to Subspace Dp assertions]** - Proyecto: `platform/frameworks/support`
+- **[ANDROID: drivers/iommu: move fault handler out of cookie union]** - Proyecto: `kernel/common`
+- **[ANDROID: pKVM: arm64: ffa_max_nr_constituents configurable]** - Proyecto: `kernel/common`
+- **[Skip GpuWorkDumpsysTest testOutputFormat for Automotive]** - Proyecto: `platform/cts`
+- **[Add keys accessor to SaveableStateHolder]** - Proyecto: `platform/frameworks/support`
+- **[Add trackpad and mouse-wheel support to Scrollable2DNode]** - Proyecto: `platform/frameworks/support`
+- **[Refactor the resolution-mechanism and resource-affected rows]** - Proyecto: `platform/tools/metalava`
+- **[DO NOT SUBMIT: Changes to https://r.android.com/3530790]** - Proyecto: `platform/frameworks/support`
+- **[Add onDescendants() selector for Compose UI tests]** - Proyecto: `platform/frameworks/support`
+- **[Update resizable modifier to use a ResizePolicy]** - Proyecto: `platform/frameworks/support`
+- **[virtio-console: use #define for control buf/queue size constants]** - Proyecto: `platform/external/u-boot`
+- **[Expose RemotePath.Builder API]** - Proyecto: `platform/frameworks/support`
+- **[Update NAVIGATIONEVENT to version 1.1.2.]** - Proyecto: `platform/frameworks/support`
+- **[Add abseil-cpp bzlmod override]** - Proyecto: `kernel/build`
+- **[./development/importMaven/importMaven.sh org.jetbrains.kotlin:kotlin-stdlib-wasm-js:2.3.20]** - Proyecto: `platform/prebuilts/androidx/external`
+- **[Remove Group Entity]** - Proyecto: `platform/frameworks/support`
+- **[import kotlin-stdlib-js:2.3.20 from maven]** - Proyecto: `platform/prebuilts/androidx/external`
+- **[Fix WatchDog Time-Out on Large Shader Comp and Large BVH Builds]** - Proyecto: `platform/external/deqp`
+- **[Rename OpenXrHelper and OpenXrScenePose to PlatformReference...]** - Proyecto: `platform/frameworks/support`
+- **[Reduce compileSdk where possible]** - Proyecto: `platform/frameworks/support`
+- **[Fix scrollUpTo method error when no scrollable view is present]** - Proyecto: `platform/packages/modules/HealthFitness`
+- **[Rename "OpenXR"->"PlatformReference" in scenecore Implementation code]** - Proyecto: `platform/frameworks/support`
+- **[docs(foundation): clean up KDocs for TextFieldState]** - Proyecto: `platform/frameworks/support`
+- **[Correct Pdf-Compose dependency scope for pdf-viewer from type api to implementation]** - Proyecto: `platform/frameworks/support`
+- **[Move base PDF primitives and interfaces to pdf-core]** - Proyecto: `platform/frameworks/support`
+- **[Move PDF edit draft and annotation models to pdf-core]** - Proyecto: `platform/frameworks/support`
+- **[Update references and visibility for moved PDF models]** - Proyecto: `platform/frameworks/support`
+- **[Relocate PDF content, selection, and form models]** - Proyecto: `platform/frameworks/support`
+- **[Introduce Modifier.curveToEdge()]** - Proyecto: `platform/frameworks/support`
+- **[Merge 1991b0af33f5 ("mm/hugetlb_cma: round up per_node before logging it") into android16-6.12-lts]** - Proyecto: `kernel/common`
+- **[Merge 3c4693c77b9a ("block: cleanup blkdev_report_zones()") into android16-6.12-lts]** - Proyecto: `kernel/common`
+- **[Merge d765bba11fce ("block: reorganize struct blk_zone_wplug") into android16-6.12-lts]** - Proyecto: `kernel/common`
+- **[Merge tag 'android16-6.12.89_r00' into android16-6.12]** - Proyecto: `kernel/common`
 
+---
+*Generado automáticamente por el nodo de monitoreo RA PULSE.*
