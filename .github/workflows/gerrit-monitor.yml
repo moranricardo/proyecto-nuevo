@@ -1,12 +1,9 @@
 name: Monitoreo de Gerrit
 
 on:
-  # Permite activar el script manualmente desde un botón en GitHub web
-  workflow_dispatch:
-  
-  # Lo ejecuta en automático cada 6 horas
+  workflow_dispatch: # Permite ejecución manual desde la web
   schedule:
-    - cron: '0 */6 * * *'
+    - cron: '0 */6 * * *' # Se ejecuta automáticamente cada 6 horas
 
 jobs:
   check-changes:
@@ -19,7 +16,7 @@ jobs:
       - name: 🟢 Configurar Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '26'
 
-      - name: 🚀 Ejecutar script de consulta
+      - name: 🚀 Ejecutar Auditoría de Gerrit
         run: node gerrit-check.js
