@@ -1,0 +1,35 @@
+name: ☀️ Ra Pulse Cloud Monitor
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    # Se ejecuta automáticamente al inicio de cada hora (Bucle en la Nube)
+    - cron: '0 * * * *'
+  workflow_dispatch:
+    # Te permite activar el escaneo manualmente desde un botón en la web de GitHub
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Clonar el repositorio
+      uses: actions/checkout@v4
+
+    - name: 🟢 Configurar entorno Node.js v26
+      uses: actions/setup-node@v4
+      with:
+        node-version: '26'
+
+    - name: 📡 Ejecutar Motor de Red Ra Pulse
+      run: node index.js
+
+    - name: 🧹 Ejecutar Script de Mantenimiento
+      run: |
+        if [ -f "./cleanup.sh" ]; then
+          chmod +x cleanup.sh
+          ./cleanup.sh
+        else
+          echo "Nota: cleanup.sh no encontrado en el directorio raíz."
+        fi

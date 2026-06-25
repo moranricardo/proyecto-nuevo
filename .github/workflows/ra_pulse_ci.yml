@@ -1,0 +1,30 @@
+name: ☀️ Ra Pulse CI
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5 
+    
+    steps:
+      - name: 📥 Clonar el repositorio
+        uses: actions/checkout@v4
+
+      - name: 🟢 Configurar entorno Node.js v26
+        uses: actions/setup-node@v4
+        with:
+          node-version: '26'
+          cache: 'npm'
+
+      - name: 🛠️ Instalar dependencias
+        run: npm ci --prefer-offline --no-audit --no-fund --silent < /dev/null
+
+      - name: 📡 Ejecutar Motor de Red Ra Pulse
+        run: node ra_pulse_bridge.cjs < /dev/null
+
+      - name: 🧹 Ejecutar Script de Mantenimiento
+        run: node mantenimiento.js < /dev/null
