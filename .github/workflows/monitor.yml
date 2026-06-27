@@ -16,8 +16,6 @@ jobs:
     steps:
       - name: 🛰️ Checkout repository
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v4
@@ -31,16 +29,20 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Bot"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           
           if [ -f state.json ]; then
             git add state.json
             if ! git diff --cached --quiet; then
               git commit -m "🤖 telemetry: actualización automática del pulso del sistema [skip ci]"
-              git push origin main
             else
               echo "No se detectaron cambios."
             fi
           else
             echo "state.json no fue generado."
           fi
+
+      - name: 🚀 Push changes
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
