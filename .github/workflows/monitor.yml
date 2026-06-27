@@ -4,45 +4,40 @@ on:
   push:
     branches: [ main ]
   schedule:
-    # Ejecución programada cada hora de forma automática
     - cron: '0 * * * *'
   workflow_dispatch:
 
 jobs:
   orchestrate:
     runs-on: ubuntu-latest
-    
-    # 🔐 Eleva privilegios del GITHUB_TOKEN para erradicar el error 403
-    permissions:
-      contents: write
 
     steps:
       - name: 🛰️ Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🟢 Setup Node.js
+      - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - name: 📦 Install dependencies
-        run: |
-          if [ -f package.json ]; then
-            npm ci || npm install
-          fi
 
       - name: 🌌 Run Ra Pulse
         run: node index.js
 
       - name: 💾 Persist telemetry state
+        env:
+          MY_TOKEN: ${{ secrets.RE_PULSE_TOKEN }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Bot"
-          git add state.json
-          if ! git diff --cached --quiet; then
-            git commit -m "🤖 telemetry: actualización automática del pulso del sistema [skip ci]"
-            git push origin main
+          
+          if [ -f state.json ]; then
+            git add state.json
+            if ! git diff --cached --quiet; then
+              git commit -m "🤖 telemetry: actualización automática del pulso del sistema [skip ci]"
+              git push https://moranricardo:${MY_TOKEN}@github.com/moranricardo/proyecto-nuevo.git main
+            else
+              echo "No se detectaron cambios en el estado de telemetría."
+            fi
           else
-            echo "No se detectaron cambios en el pulso de telemetría. Omitiendo commit."
+            echo "state.json no fue generado en este pulso."
           fi
-
