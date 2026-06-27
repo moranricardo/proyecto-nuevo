@@ -8,23 +8,46 @@ on:
 jobs:
   monitor:
     runs-on: ubuntu-latest
-    timeout-minutes: 5 
     
+    # 🔐 Permisos explícitos para permitir que el bot haga git push del state.json
+    permissions:
+      contents: write
+
     steps:
-      - name: 📥 Clonar el repositorio
+      # 1. Descargar el código del repositorio en la máquina virtual
+      - name: 🛰️ Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🟢 Configurar entorno Node.js v26
+      # 2. Configurar el entorno ligero de Node.js en la nube
+      - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '26'
+          node-version: 20
           cache: 'npm'
+          cache-dependency-path: package-lock.json
+        continue-on-error: true
 
-      - name: 🛠️ Instalar dependencias
-        run: npm ci --prefer-offline --no-audit --no-fund --silent < /dev/null
+      # 3. Instalar dependencias del proyecto (si existen)
+      - name: 📦 Install dependencies
+        run: |
+          if [ -f package.json ]; then
+            npm ci || npm install
+          fi
 
-      - name: 📡 Ejecutar Motor de Red Ra Pulse
-        run: node ra_pulse_bridge.cjs < /dev/null
+      # 4. Ejecutar el pulso que extrae los 500 cambios de Android-Review y actualiza state.json
+      - name: 🌌 Run Ra Pulse
+        run: node index.js
 
-      - name: 🧹 Ejecutar Script de Mantenimiento
-        run: node mantenimiento.js < /dev/null
+      # 5. Guardar la telemetría automáticamente en el repositorio y saltar el CI para evitar bucles
+      - name: 💾 Persist telemetry state
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action Bot"
+          git add state.json
+          if ! git diff --cached --quiet; then
+            git commit -m "🤖 telemetry: actualización automática del pulso del sistema [skip ci]"
+            git push origin main
+          else
+            echo "No se detectaron cambios en el pulso de telemetría. Omitiendo commit."
+          fi
+
