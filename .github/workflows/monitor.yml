@@ -13,7 +13,6 @@ permissions:
 jobs:
   orchestrate:
     runs-on: ubuntu-latest
-
     steps:
       - name: 🛰️ Checkout repository
         uses: actions/checkout@v4
@@ -32,15 +31,15 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Bot"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
           
           if [ -f state.json ]; then
             git add state.json
             if ! git diff --cached --quiet; then
               git commit -m "🤖 telemetry: actualización automática del pulso del sistema [skip ci]"
-              # 🚀 Autenticación dinámica usando el token nativo del runner
-              git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main
+              git push origin main
             else
-              echo "No se detectaron cambios en el estado de telemetría."
+              echo "No se detectaron cambios."
             fi
           else
             echo "state.json no fue generado."
