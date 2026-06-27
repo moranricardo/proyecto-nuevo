@@ -7,6 +7,10 @@ on:
     - cron: '0 * * * *'
   workflow_dispatch:
 
+# 🔑 ESTO CORRIGE EL ERROR 403: Otorga permisos de escritura al bot nativo de Actions
+permissions:
+  contents: write
+
 jobs:
   orchestrate:
     runs-on: ubuntu-latest
@@ -24,8 +28,6 @@ jobs:
         run: node index.js
 
       - name: 💾 Persist telemetry state
-        env:
-          MY_TOKEN: ${{ secrets.RE_PULSE_TOKEN }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action Bot"
@@ -34,7 +36,8 @@ jobs:
             git add state.json
             if ! git diff --cached --quiet; then
               git commit -m "🤖 telemetry: actualización automática del pulso del sistema [skip ci]"
-              git push https://moranricardo:${MY_TOKEN}@github.com/moranricardo/proyecto-nuevo.git main
+              # 🚀 Eliminamos la URL compleja; usando el GITHUB_TOKEN nativo con permisos de escritura
+              git push origin main
             else
               echo "No se detectaron cambios en el estado de telemetría."
             fi
