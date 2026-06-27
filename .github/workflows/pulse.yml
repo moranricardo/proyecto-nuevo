@@ -5,21 +5,24 @@ on:
     - cron: '0 * * * *' # Se ejecuta automáticamente cada hora
   workflow_dispatch:     # Permite la ejecución manual desde la interfaz de GitHub
 
+permissions:
+  contents: write
+
 jobs:
   orchestrate:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Clonar repositorio con token de acceso
+    - name: Clonar repositorio
       uses: actions/checkout@v4
       with:
-        token: ${{ secrets.TELEMETRY_TOKEN }}
+        token: ${{ secrets.TELEMETRY_TOKEN || github.token }}
         fetch-depth: 0
 
-    - name: Configurar Node.js
+    - name: Configurar Node.js 24
       uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: '24'
         cache: 'npm'
 
     - name: Instalar dependencias
