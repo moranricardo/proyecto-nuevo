@@ -7,7 +7,6 @@ on:
     - cron: '0 * * * *'
   workflow_dispatch:
 
-# 🔑 ESTO CORRIGE EL ERROR 403: Otorga permisos de escritura al bot nativo de Actions
 permissions:
   contents: write
 
@@ -18,6 +17,8 @@ jobs:
     steps:
       - name: 🛰️ Checkout repository
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v4
@@ -36,11 +37,11 @@ jobs:
             git add state.json
             if ! git diff --cached --quiet; then
               git commit -m "🤖 telemetry: actualización automática del pulso del sistema [skip ci]"
-              # 🚀 Eliminamos la URL compleja; usando el GITHUB_TOKEN nativo con permisos de escritura
-              git push origin main
+              # 🚀 Autenticación dinámica usando el token nativo del runner
+              git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git main
             else
               echo "No se detectaron cambios en el estado de telemetría."
             fi
           else
-            echo "state.json no fue generado en este pulso."
+            echo "state.json no fue generado."
           fi
