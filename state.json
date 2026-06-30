@@ -1,7 +1,21 @@
 {
+ HEAD
   "GerritFetcher": {
     "status": "HEALTHY",
     "timestamp": "2026-06-30T10:51:04.711Z",
     "details": "Fetched 5 changes."
+
+  "3192": {
+    "status": "VALIDADO_APROBADO",
+    "timestamp": "2026-06-29T14:52:23.031Z"
+  },
+  "3193": {
+    "status": "VALIDADO_APROBADO",
+    "timestamp": "2026-06-29T14:52:21.553Z"
+  },
+  "3194": {
+    "status": "VALIDADO_APROBADO",
+    "timestamp": "2026-06-29T14:52:20.784Z"
+ 20a722a86 (chore: estructura organizada, scripts experimentales en /scripts y guardia CI/CD activado)
   }
 }

@@ -1,0 +1,36 @@
+name: CI Integrity Control
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # 1. EL GUARDIÁN: Validar orden del repositorio
+      - name: Verify Documentation Structure
+        run: |
+          echo "Verificando integridad del Maat..."
+          # Buscamos archivos .md huérfanos en la raíz, exceptuando los esenciales
+          files=$(find . -maxdepth 1 -name "*.md" | grep -vE "README.md|LICENSE.md")
+          if [ -n "$files" ]; then
+            echo "::error::Archivos .md sueltos detectados en la raíz: $files"
+            echo "Acción requerida: Mueve estos archivos a sus directorios en /api/ o /guides/"
+            exit 1
+          fi
+          echo "Estructura validada exitosamente."
+
+      # 2. PROCESAMIENTO: Instalación y construcción
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
