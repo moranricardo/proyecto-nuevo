@@ -1,51 +1,35 @@
-const https = require('https');
+/**
+ * Orquestador Principal - moranricardo/proyecto-nuevo
+ * Diseñado bajo arquitectura ligera para Termux / GitHub Actions
+ */
 
-// Configuración base de Gerrit
-const GERRIT_HOST = 'gerrit.tu-servidor.com'; // Reemplazar con tu host real
-const GERRIT_PORT = 443;
-const ENDPOINT = '/changes/?q=status:open&n=5'; // Ejemplo: últimos 5 cambios abiertos
+// Importación modular dinámica de los scripts bajo demanda (ahorra RAM)
+const path = require('path');
 
-const options = {
-  hostname: GERRIT_HOST,
-  port: GERRIT_PORT,
-  path: ENDPOINT,
-  method: 'GET',
-  headers: {
-    'Accept': 'application/json',
-    // 'Authorization': 'Basic ' + Buffer.from('usuario:token').toString('base64') // Descomentar si requiere auth
-  }
-};
+// Leer el contexto de ejecución (por variable de entorno o argumento)
+const MODE = process.env.RAPULSE_MODE || process.argv[2] || 'check';
 
-const req = https.request(options, (res) => {
-  let data = '';
+console.log(`[INFO] Iniciando Orquestador en Modo: ${MODE}`);
 
-  res.on('data', (chunk) => {
-    data += chunk;
-  });
+switch (MODE) {
+  case 'check':
+    console.log('[DRIVE] Ejecutando verificación de Gerrit...');
+    require('./src/gerrit/gerrit-check.js');
+    break;
 
-  res.on('end', () => {
-    try {
-      // Regla Técnica: Limpieza estricta del prefijo de seguridad anti-XSS
-      const antiXssPrefix = ")]}'\n";
-      let cleanData = data;
-      
-      if (data.startsWith(antiXssPrefix)) {
-        cleanData = data.slice(antiXssPrefix.length);
-      }
+  case 'pulse':
+    console.log('[DRIVE] Ejecutando puente RA Pulse Bridge...');
+    require('./src/rapulse.js');
+    break;
 
-      const jsonResponse = JSON.parse(cleanData);
-      console.log('=== Conexión Exitosa con Gerrit ===');
-      console.log(`Cambios detectados: ${jsonResponse.length}`);
-      console.log(JSON.stringify(jsonResponse, null, 2));
+  case 'client':
+    console.log('[DRIVE] Iniciando cliente nativo Gerrit...');
+    require('./src/gerrit/gerrit-client.js');
+    break;
 
-    } catch (error) {
-      console.error('::error::Error al parsear la respuesta JSON de Gerrit:', error.message);
-    }
-  });
-});
-
-req.on('error', (e) => {
-  console.error(`::error::Fallo en la petición HTTP: ${e.message}`);
-});
-
-req.end();
+  default:
+    console.warn(`[WARN] Modo '${MODE}' no reconocido. Ejecutando consulta de salud por defecto...`);
+    // Fallback ligero: Test de conexión HTTPS a Gerrit
+    require('./src/gerrit/gerrit-utils.js');
+    break;
+}
