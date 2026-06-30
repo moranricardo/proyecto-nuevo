@@ -3,9 +3,6 @@
  * Diseñado bajo arquitectura ligera para Termux / GitHub Actions
  */
 
-// Importación modular dinámica de los scripts bajo demanda (ahorra RAM)
-const path = require('path');
-
 // Leer el contexto de ejecución (por variable de entorno o argumento)
 const MODE = process.env.RAPULSE_MODE || process.argv[2] || 'check';
 
@@ -29,7 +26,6 @@ switch (MODE) {
 
   default:
     console.warn(`[WARN] Modo '${MODE}' no reconocido. Ejecutando consulta de salud por defecto...`);
-    // Fallback ligero: Test de conexión HTTPS a Gerrit
     require('./src/gerrit/gerrit-utils.js');
     break;
 }

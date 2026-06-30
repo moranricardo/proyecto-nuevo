@@ -36,7 +36,7 @@ jobs:
 
       # 4. Ejecutar el pulso que extrae los 500 cambios de Android-Review y actualiza state.json
       - name: 🌌 Run Ra Pulse
-        run: node index.js
+        run: node index.cjs
 
       # 5. Guardar la telemetría automáticamente en el repositorio y saltar el CI para evitar bucles
       - name: 💾 Persist telemetry state

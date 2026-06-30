@@ -23,7 +23,7 @@ jobs:
           node-version: 20
 
       - name: 🌌 Run Ra Pulse
-        run: node index.js
+        run: node index.cjs
 
       - name: 💾 Persist telemetry state
         run: |
