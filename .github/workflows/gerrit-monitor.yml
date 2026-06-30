@@ -19,4 +19,4 @@ jobs:
           node-version: '26'
 
       - name: 🚀 Ejecutar Auditoría de Gerrit
-        run: node gerrit-check.js
+        run: node src/gerrit/gerrit-check.js
