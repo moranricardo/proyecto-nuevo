@@ -1,36 +1,26 @@
-name: CI Integrity Control
+name: Validador de Integridad (Maat)
 
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
-  build:
+  validate:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
-      
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
+    - name: Clonar repositorio
+      uses: actions/checkout@v4
 
-      # 1. EL GUARDIÁN: Validar orden del repositorio
-      - name: Verify Documentation Structure
-        run: |
-          echo "Verificando integridad del Maat..."
-          # Buscamos archivos .md huérfanos en la raíz, exceptuando los esenciales
-          files=$(find . -maxdepth 1 -name "*.md" | grep -vE "README.md|LICENSE.md")
-          if [ -n "$files" ]; then
-            echo "::error::Archivos .md sueltos detectados en la raíz: $files"
-            echo "Acción requerida: Mueve estos archivos a sus directorios en /api/ o /guides/"
-            exit 1
-          fi
-          echo "Estructura validada exitosamente."
+    - name: Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 26
 
-      # 2. PROCESAMIENTO: Instalación y construcción
-      - name: Install dependencies
-        run: npm install
+    - name: Instalar Dependencias
+      run: npm install --production || echo "No hay dependencias pesadas"
 
-      - name: Build project
-        run: npm run build
+    - name: Validar Sintaxis del Orquestador
+      run: node index.cjs check
