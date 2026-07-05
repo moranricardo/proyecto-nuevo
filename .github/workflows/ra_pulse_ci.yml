@@ -16,11 +16,11 @@ jobs:
     steps:
       # 1. Descargar el código del repositorio en la máquina virtual
       - name: 🛰️ Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       # 2. Configurar el entorno ligero de Node.js en la nube
       - name: 🟢 Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: 20
           cache: 'npm'
