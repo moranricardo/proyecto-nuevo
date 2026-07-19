@@ -1,26 +1,15 @@
-name: Validador de Integridad (Maat)
+name: Ra Pulse CI
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+on: [push]
 
 jobs:
-  validate:
+  orchestrate:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Clonar repositorio
-      uses: actions/checkout@v7
-
-    - name: Configurar Node.js
-      uses: actions/setup-node@v6
-      with:
-        node-version: 26
-
-    - name: Instalar Dependencias
-      run: npm install --production || echo "No hay dependencias pesadas"
-
-    - name: Validar Sintaxis del Orquestador
-      run: node index.cjs check
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+      - name: Ejecutar script
+        run: node src/rapulse.js
