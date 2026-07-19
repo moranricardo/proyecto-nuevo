@@ -1,19 +1,18 @@
 name: Ra Pulse CI
-
 on: [push, workflow_dispatch]
-
 jobs:
   orchestrate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '22'
-      - name: Preparar entorno
+      - name: Diagnostico
+        run: |
+          echo "Listando archivos:"
+          ls -R
+          echo "Version de node:"
+          node -v
+      - name: Ejecutar auditoría
         run: |
           npm init -y
           npm pkg set type="module"
-      - name: Ejecutar auditoría
-        run: node src/rapulse.js
+          node src/rapulse.js
