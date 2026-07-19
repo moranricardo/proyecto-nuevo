@@ -1,6 +1,6 @@
 name: Ra Pulse CI
 
-on: [push]
+on: [push, workflow_dispatch]
 
 jobs:
   orchestrate:
@@ -11,5 +11,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '22'
-      - name: Ejecutar script
+      - name: Preparar entorno
+        run: |
+          npm init -y
+          npm pkg set type="module"
+      - name: Ejecutar auditoría
         run: node src/rapulse.js
