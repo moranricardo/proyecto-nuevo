@@ -5,14 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Diagnostico
+      - name: Prueba Minima
         run: |
-          echo "Listando archivos:"
-          ls -R
-          echo "Version de node:"
           node -v
-      - name: Ejecutar auditoría
-        run: |
-          npm init -y
-          npm pkg set type="module"
+          ls -R
           node src/rapulse.js
