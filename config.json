@@ -1,11 +1,13 @@
 {
   "gerrit": {
-    "baseUrl": "https://gerrit.ejemplo.com",
-    "query": "status:open",
-    "timeout": 5000
+    "baseUrl": "https://review.lineageos.org",
+    "query": "status:open project:LineageOS/android_kernel_qcom_sm8350",
+    "timeout": 8000,
+    "limit": 10
   },
   "pulse": {
     "stateFile": "./state.json",
-    "environment": "development"
+    "environment": "production",
+    "notifyOnChange": true
   }
 }

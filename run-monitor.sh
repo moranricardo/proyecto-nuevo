@@ -10,7 +10,7 @@ while true; do
     echo "-------------------------------------------------"
     
     # 1. Ejecutar el motor principal unificado
-    node index.js
+    node index.cjs
     
     # 2. Ejecutar la limpieza estructural en segundo plano de forma silenciosa
     ./cleanup.sh > /dev/null
