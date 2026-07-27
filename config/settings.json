@@ -1,0 +1,5 @@
+{
+  "gerrit_url": "https://review.lineageos.org",
+  "project": "LineageOS/android_device_mainline_generic",
+  "interval": 30000
+}
