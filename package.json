@@ -1,1 +1,11 @@
-{"type": "module"}
+{
+  "name": "proyecto-nuevo",
+  "version": "1.0.0",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node scripts/index.cjs"
+  },
+  "dependencies": {
+    "nodemailer": "^9.0.3"
+  }
+}

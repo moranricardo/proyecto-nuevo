@@ -1,55 +1,29 @@
-const { auditarLineasAccesibilidad } = require('./accessibility_audit.cjs');
+const https = require('https');
+const { enviarAlerta } = require('../src/notification_gateway.js');
 
-/**
- * Extrae y limpia los detalles de un commit específico en Gerrit usando su revisión actual
- */
-async function extraerCommitEspecifico(changeId) {
-    console.log(`🔍 Ra Pulse: Extrayendo detalles del commit específico [ID: ${changeId}]...`);
+// Configuración de tu servidor Gerrit (ejemplo)
+const GERRIT_URL = 'android-review.googlesource.com';
+
+async function auditarGerrit() {
+    console.log("🔍 Ra Pulse: Consultando el estado de la balanza en Gerrit...");
     
-    // Cambiamos a la URL directa de la revisión actual, que entrega archivos y commits limpios en un solo viaje
-    const url = `https://review.lineageos.org/changes/${changeId}/revisions/current/commit`;
-
-    try {
-        const respuesta = await fetch(url, { 
-            headers: { 'Accept': 'application/json' } 
+    // Petición a la API (añadimos q=status:open para ver cambios recientes)
+    https.get(`https://${GERRIT_URL}/changes/?q=status:open`, (res) => {
+        let data = '';
+        res.on('data', (chunk) => data += chunk);
+        res.on('end', async () => {
+            // Gerrit añade el prefijo )]}'\n para evitar XSS, hay que quitarlo
+            const json = JSON.parse(data.replace(")]}'\n", ""));
+            
+            // Lógica: Si hay cambios muy recientes o inseguros, disparamos
+            if (json.length > 0) {
+                console.log(`⚠️ Se encontraron ${json.length} cambios abiertos.`);
+                await enviarAlerta("🚨 Ra Pulse: Alerta Gerrit", `Se han detectado ${json.length} cambios abiertos en el repositorio.`);
+            } else {
+                console.log("✅ Sistema en equilibrio.");
+            }
         });
-
-        if (!respuesta.ok) {
-            throw new Error(`Error de red en Gerrit (Código: ${respuesta.status})`);
-        }
-
-        let textoCrudo = await respuesta.text();
-
-        // 🛡️ LIMPIEZA OBLIGATORIA DEL PREFIJO ANTI-XSS
-        const textoLimpio = textoCrudo.replace(/^\)]}'\n/, '');
-        const datosCommit = JSON.parse(textoLimpio);
-
-        console.log(`✅ Datos extraídos con éxito.`);
-        console.log(`📝 Mensaje: ${datosCommit.message.split('\n')[0]}`); // Muestra el título del commit
-        console.log(`👤 Autor: ${datosCommit.author.name}`);
-
-        // Enviamos el objeto adaptado a la aduana
-        const esSeguro = auditarLineasAccesibilidad({
-            subject: datosCommit.message,
-            project: "LineageOS/android_frameworks_base" // Hardcodeado para simular la estructura que pide el validador
-        });
-        
-        if (!esSeguro) {
-            console.error("🚨 Resultado: El commit específico contiene anomalías en el túnel de entrada.");
-            return false;
-        }
-
-        console.log("☀️ Resultado: Commit aprobado por la balanza de Maat.");
-        return true;
-
-    } catch (error) {
-        console.error(`❌ Falla crítica al extraer el commit: ${error.message}`);
-        return false;
-    }
+    }).on('error', (e) => console.error("Error en la conexión:", e));
 }
 
-// Cambiamos a un ID de cambio de frameworks_base que sabemos que existe en LineageOS (ej: 345621 o similar)
-// Usamos "384500" como ID de prueba válido de la plataforma
-extraerCommitEspecifico("384500").then(resultado => {
-    console.log(`📡 Monitoreo del radio completado. Estado final: ${resultado}`);
-});
+auditarGerrit();

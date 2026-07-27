@@ -1,102 +1,65 @@
-// ra_pulse_bridge.cjs
-const fs = require('fs');
-// Radio Desacoplado: Módulo de auditoría de accesibilidad
+/**
+ * @file index.js
+ * @description Puente de Telemetría v2.0 - Optimizado para Node.js (GitHub Actions compatible)
+ */
+
+const fs = require('fs').promises; // Uso de promesas para evitar bloqueo de I/O
+const config = require('../config/settings.json');
+const { fetchChanges } = require('../utils/gerrit_client.cjs');
 const { auditarLineasAccesibilidad } = require('./accessibility_audit.cjs');
 
-console.log("📡 [Ra Pulse Bridge] Iniciando puente de telemetría hacia LineageOS Gerrit...");
+console.log("📡 [Ra Pulse Bridge] Inicializando auditoría remota...");
 
 /**
- * EL PERRO GUARDIÁN (Watchdog)
- * Evita que el proceso quede atrapado en el Duat (timeouts infinitos)
- * protegiendo los recursos de Termux y los minutos de GitHub Actions.
+ * Limpiador de prefijo de seguridad Gerrit
+ * @param {string} rawData 
+ * @returns {Object}
  */
-function ejecutarConWatchdog(tarea, tiempoMaximoMs) {
-    const timeout = setTimeout(() => {
-        console.error("⏳ ERROR FATAL: Apofis ha atrapado el proceso. Tiempo límite excedido. Abortando...");
-        
-        // Reportar falla crítica al centro de estado antes de morir
-        const failedStatus = { 
-            status: "CRITICAL", 
-            last_pulse: new Date().toISOString(), 
-            modules: { bridge: "TIMEOUT" } 
-        };
-        fs.writeFileSync('state.json', JSON.stringify(failedStatus, null, 2));
-        
-        process.exit(1); 
-    }, tiempoMaximoMs);
-    
-    tarea().finally(() => clearTimeout(timeout));
-}
+const cleanGerritResponse = (rawData) => {
+    const cleaned = rawData.replace(/^\)\]\}'\n/, '');
+    return JSON.parse(cleaned);
+};
 
-/**
- * EL MOTOR DE RA PULSE
- * Consume la API de Gerrit, limpia el JSON y delega la validación.
- */
-async function iniciarMotorRaPulse() {
-    const url = 'https://review.lineageos.org/changes/?q=project:LineageOS/android_frameworks_base+status:open&n=1';
-    
+async function ejecutarCiclo() {
     try {
-        // Uso de fetch nativo (Node v18+) para mantener el entorno ligero
-        const respuesta = await fetch(url, { 
-            headers: { 
-                'Accept': 'application/json',
-                'User-Agent': 'RaPulse-Orchestrator-Termux' 
-            } 
-        });
-        
-        let texto = await respuesta.text();
-        
-        // REGLA DE ORO: Limpieza del prefijo anti-XSS de Gerrit
-        const magicPrefix = ")]}'\n";
-        if (texto.startsWith(magicPrefix)) {
-            texto = texto.slice(magicPrefix.length);
-        }
+        // 1. Obtención de datos
+        const rawData = await fetchChanges(config.gerrit_url, config.project);
+        const changes = cleanGerritResponse(rawData);
 
-        const datos = JSON.parse(texto);
-        console.log(`✅ Telemetría extraída. Cambios detectados en el framework: ${datos.length}`);
+        if (!Array.isArray(changes)) throw new Error("Formato de respuesta Gerrit inválido");
 
-        let maatRestaurado = true;
+        console.log(`✅ Telemetría extraída. Cambios detectados: ${changes.length}`);
 
-        if (datos.length > 0) {
-            // Se invoca al Mago de Oz: El análisis ocurre silenciosamente en el backend
-            const esSeguro = auditarLineasAccesibilidad(datos[0]);
+        // 2. Lógica de auditoría
+        if (changes.length > 0) {
+            const esSeguro = auditarLineasAccesibilidad(changes[0]);
             
+            // 3. Persistencia de estado (Async para no bloquear)
+            const status = { 
+                status: esSeguro ? "STABLE" : "WARNING", 
+                last_pulse: new Date().toISOString(),
+                latest_change: changes[0]._number
+            };
+            await fs.writeFile('state.json', JSON.stringify(status, null, 2));
+
             if (!esSeguro) {
-                console.error("❌ Validación fallida. El cambio ha sido bloqueado en el Dashboard.");
-                maatRestaurado = false;
-            } else {
-                console.log("☀️ Sistema Ra Pulse: Auditoría limpia. Maat restaurado.");
+                console.error("❌ Auditoría fallida. Proceso interrumpido.");
+                process.exit(1); 
             }
-        } else {
-            console.log("💤 Sin cambios nuevos en el framework de accesibilidad.");
         }
 
-        // Reportar el pulso final al archivo central de estado para que los radios lo lean
-        const status = { 
-            status: maatRestaurado ? "STABLE" : "WARNING", 
-            last_pulse: new Date().toISOString(), 
-            modules: { bridge: maatRestaurado ? "OK" : "AUDIT_FAILED" } 
-        };
-        fs.writeFileSync('state.json', JSON.stringify(status, null, 2));
-        console.log("📝 Pulso reportado en state.json");
-
-        // Si el Maat se rompió, forzamos salida con error para detener el CI/CD en GitHub Actions
-        if (!maatRestaurado) process.exit(1);
-
+        console.log("☀️ Ciclo completado exitosamente.");
     } catch (error) {
-        console.error(`💥 Falla en el puente al cruzar el Duat: ${error.message}`);
-        
-        // Registro forense en state.json
-        const errorStatus = { 
-            status: "CRITICAL", 
-            last_pulse: new Date().toISOString(), 
-            modules: { bridge: "ERROR", detail: error.message } 
-        };
-        fs.writeFileSync('state.json', JSON.stringify(errorStatus, null, 2));
-        
+        console.error(`💥 [CRITICAL] Error en el flujo: ${error.message}`);
         process.exit(1);
     }
 }
 
-// Iniciar el Ciclo de Ra con un límite estricto de 10 segundos
-ejecutarConWatchdog(iniciarMotorRaPulse, 10000);
+// Timeout de seguridad nativo
+const WATCHDOG_MS = 15000;
+const timer = setTimeout(() => {
+    console.error("⏳ ERROR: Timeout alcanzado. La conexión a Gerrit es inestable.");
+    process.exit(1);
+}, WATCHDOG_MS);
+
+ejecutarCiclo().finally(() => clearTimeout(timer));
