@@ -1,0 +1,29 @@
+name: Pipeline CI/CD - Ra Pulse
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar código del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Entorno Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar Dependencias
+        run: npm install
+
+      - name: Ejecutar Validación de Salud (Default)
+        run: node index.cjs
+
+      - name: Ejecutar Validación de Integridad (Pulse)
+        run: node index.cjs pulse

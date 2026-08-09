@@ -1,11 +1,20 @@
 {
   "name": "proyecto-nuevo",
   "version": "1.0.0",
+  "description": "Orquestador Ra Pulse y Suite Gerrit para Termux y GitHub Actions",
+  "main": "index.cjs",
   "type": "module",
   "scripts": {
-    "start": "node scripts/index.cjs"
+    "start": "node index.cjs",
+    "pulse": "node index.cjs pulse",
+    "client": "node index.cjs client",
+    "sandbox": "node src/gerrit/gerrit-sandbox.cjs",
+    "test": "node index.cjs && node index.cjs pulse && node src/gerrit/gerrit-sandbox.cjs"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "dependencies": {
-    "nodemailer": "^9.0.3"
+    "nodemailer": "^6.9.16"
   }
 }
