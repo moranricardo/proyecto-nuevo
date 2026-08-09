@@ -1,38 +1,45 @@
-const settings = require('../../config/settings.json');
+// src/gerrit/gerrit-client.cjs - Cliente API Gerrit con CommonJS
+const { cleanGerritResponse } = require('./gerrit-utils.cjs');
 
-async function obtenerCambiosGerrit(urlPersonalizada) {
-    // Usar URL pasada por parámetro o tomar la de settings.json (soportando ambas estructuras)
-    const baseUrl = settings.gerrit?.url || settings.gerrit_url;
-    const project = settings.gerrit?.project || settings.project;
-    const limit = settings.gerrit?.query_limit || 10;
-    
-    const url = urlPersonalizada || `${baseUrl}/changes/?q=project:${project}&n=${limit}`;
-
-    try {
-        const respuesta = await fetch(url);
-        if (!respuesta.ok) {
-            throw new Error(`HTTP Error: ${respuesta.status} ${respuesta.statusText}`);
-        }
-
-        let texto = await respuesta.text();
-        const XSS_PREFIX = ")]}'";
-
-        texto = texto.trim();
-        if (texto.startsWith(XSS_PREFIX)) {
-            texto = texto.slice(XSS_PREFIX.length).trim();
-        }
-
-        return JSON.parse(texto);
-    } catch (error) {
-        throw new Error(`[Gerrit Client] Error en el flujo del Duat: ${error.message}`);
-    }
+let settings = {};
+try {
+  settings = require('../../config/settings.json');
+} catch (e) {
+  // Fallback si no existe el JSON de configuración local
+  settings = {};
 }
 
-// Si se ejecuta directamente desde consola
+/**
+ * Consulta cambios en la API REST de Gerrit.
+ * @param {string} [urlPersonalizada] - URL alternativa para la petición.
+ * @returns {Promise<Object>}
+ */
+async function obtenerCambiosGerrit(urlPersonalizada) {
+  const baseUrl = process.env.GERRIT_URL || settings.gerrit?.url || settings.gerrit_url || 'https://android-review.googlesource.com';
+  const project = process.env.GERRIT_PROJECT || settings.gerrit?.project || settings.project || 'platform/frameworks/base';
+  const limit = settings.gerrit?.query_limit || 10;
+
+  const url = urlPersonalizada || `${baseUrl}/changes/?q=project:${project}&n=${limit}`;
+
+  try {
+    const respuesta = await fetch(url);
+    if (!respuesta.ok) {
+      throw new Error(`HTTP Error: ${respuesta.status} ${respuesta.statusText}`);
+    }
+
+    const textoBruto = await respuesta.text();
+    const textoLimpio = cleanGerritResponse(textoBruto);
+
+    return JSON.parse(textoLimpio);
+  } catch (error) {
+    throw new Error(`[Gerrit Client] Error en el flujo del Duat: ${error.message}`);
+  }
+}
+
 if (require.main === module) {
-    obtenerCambiosGerrit()
-        .then(data => console.log("[Gerrit Client] Respuesta recibida:", data))
-        .catch(err => console.error(err.message));
+  obtenerCambiosGerrit()
+    .then(data => console.log("✔ [Gerrit Client] Respuesta recibida exitosamente. Registros:", data.length))
+    .catch(err => console.error("❌", err.message));
 }
 
 module.exports = { obtenerCambiosGerrit };

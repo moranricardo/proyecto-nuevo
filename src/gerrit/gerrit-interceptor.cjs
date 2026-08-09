@@ -1,10 +1,17 @@
+// src/gerrit/gerrit-interceptor.cjs - Servidor Interceptor Local (Sandbox)
 const http = require('http');
 const fs = require('fs/promises');
 const path = require('path');
-const settings = require('../../config/settings.json');
+
+let settings = {};
+try {
+  settings = require('../../config/settings.json');
+} catch (e) {
+  settings = {};
+}
 
 const PORT = process.env.PORT || 8080;
-const STATE_FILE = path.join(process.cwd(), settings.telemetry?.output_file || 'state.json');
+const STATE_FILE = path.join(process.cwd(), settings.telemetry?.output_file || 'sandbox-state.json');
 const GERRIT_ANTI_XSS = ")]}'\n";
 
 async function obtenerEstadoLocal() {
