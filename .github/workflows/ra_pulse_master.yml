@@ -1,7 +1,3 @@
-# (Pegas el código)
-git add .github/workflows/ra_pulse_master.yml
-git commit -m "ci: optimizar ra_pulse_master con caching y bot oficial"
-git push origin main
 name: Ra Pulse Master CI
 
 on:
@@ -27,7 +23,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
 
       - name: 📦 Instalar Dependencias
         run: |
