@@ -24,4 +24,3 @@ async function enviarAlerta(asunto, mensaje) {
 }
 
 module.exports = { enviarAlerta };
-
