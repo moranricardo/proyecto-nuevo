@@ -27,4 +27,10 @@ function validarIntegridad(texto) {
   };
 }
 
+// Prueba rápida si el script es ejecutado directamente
+if (require.main === module) {
+  const prueba = validarIntegridad("¿Está el entorno de Maat validado correctamente?");
+  console.log("🧪 Prueba directa:", prueba);
+}
+
 module.exports = { validarIntegridad };
