@@ -25,12 +25,7 @@ jobs:
           node-version: '20'
 
       - name: 📦 Instalar Dependencias
-        run: |
-          if [ -f package-lock.json ]; then
-            npm ci
-          elif [ -f package.json ]; then
-            npm install
-          fi
+        run: npm install
 
       - name: 🌌 Ejecutar Ra Pulse
         run: node index.cjs
