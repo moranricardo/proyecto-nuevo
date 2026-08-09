@@ -1,32 +1,53 @@
+// scripts/blindar.cjs (Módulo de blindaje y privacidad del repositorio)
 const https = require('https');
-const GITHUB_TOKEN = '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'; 
-const OWNER = 'moranricardo';
-const REPO = 'proyecto-nuevo';
 
-const data = JSON.stringify({ private: true });
-const options = {
-  hostname: 'api.github.com',
-  path: '/repos/' + OWNER + '/' + REPO,
-  method: 'PATCH',
-  headers: {
-    'Authorization': 'Bearer ' + GITHUB_TOKEN,
-    'Content-Type': 'application/json',
-    'User-Agent': 'Termux-Maat-Client',
-    'Accept': 'application/vnd.github.v3+json'
+/**
+ * Cambia la visibilidad del repositorio en GitHub a Privado.
+ * Utiliza el token pasado por parámetro o la variable de entorno GITHUB_TOKEN.
+ * @param {string} [tokenOverride] - Token opcional para autenticación con la API de GitHub.
+ */
+function blindarRepositorio(tokenOverride) {
+  const token = tokenOverride || process.env.GITHUB_TOKEN;
+  const owner = 'moranricardo';
+  const repo = 'proyecto-nuevo';
+
+  if (!token) {
+    console.warn('⚠️ [Blindar] No se proporcionó GITHUB_TOKEN. Omitiendo actualización de visibilidad.');
+    return;
   }
-};
 
-const req = https.request(options, (res) => {
-  let responseData = '';
-  res.on('data', (chunk) => responseData += chunk);
-  res.on('end', () => {
-    if (res.statusCode === 200) {
-      console.log('[Éxito] El repositorio ' + REPO + ' es ahora privado.');
-    } else {
-      console.error('[Error ' + res.statusCode + '] Respuesta:', responseData);
+  const data = JSON.stringify({ private: true });
+  const options = {
+    hostname: 'api.github.com',
+    path: `/repos/${owner}/${repo}`,
+    method: 'PATCH',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'User-Agent': 'Termux-Maat-Client',
+      'Accept': 'application/vnd.github.v3+json'
     }
+  };
+
+  const req = https.request(options, (res) => {
+    let responseData = '';
+    res.on('data', (chunk) => { responseData += chunk; });
+    res.on('end', () => {
+      if (res.statusCode === 200) {
+        console.log(`🔒 [Éxito] El repositorio '${repo}' ahora es privado.`);
+      } else {
+        console.error(`❌ [Error ${res.statusCode}] No se pudo cambiar visibilidad:`, responseData);
+      }
+    });
   });
-});
-req.on('error', (e) => console.error('Error:', e.message));
-req.write(data);
-req.end();
+
+  req.on('error', (e) => console.error('❌ [Error de Red]:', e.message));
+  req.write(data);
+  req.end();
+}
+
+if (require.main === module) {
+  blindarRepositorio();
+}
+
+module.exports = { blindarRepositorio };

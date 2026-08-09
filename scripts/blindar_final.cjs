@@ -1,43 +1,20 @@
-const https = require('https');
+// scripts/blindar_final.cjs (Ejecutable del flujo final de blindaje Maat)
+const { blindarRepositorioEspecifico } = require('./blindar_especifico.cjs');
 
-// --- CONFIGURACIÓN ---
-// Sustituye 'TU_TOKEN_REAL_AQUI' por tu personal access token de GitHub
-const GITHUB_TOKEN = 'TU_TOKEN_REAL_AQUI'; 
-const OWNER = 'moranricardo';
-const REPO = 'proyecto-nuevo';
+/**
+ * Punto de entrada final para ejecutar el blindaje del proyecto.
+ */
+function ejecutarBlindajeFinal() {
+  console.log('🛡️ [Maat] Iniciando proceso de blindaje final del entorno...');
+  
+  const owner = process.env.REPO_OWNER || 'moranricardo';
+  const repo = process.env.REPO_NAME || 'proyecto-nuevo';
 
-const data = JSON.stringify({ private: true });
+  blindarRepositorioEspecifico(owner, repo);
+}
 
-const options = {
-  hostname: 'api.github.com',
-  path: `/repos/${OWNER}/${REPO}`,
-  method: 'PATCH',
-  headers: {
-    'Authorization': `Bearer ${GITHUB_TOKEN}`,
-    'Content-Type': 'application/json',
-    'User-Agent': 'Termux-Maat-Client',
-    'Accept': 'application/vnd.github.v3+json'
-  }
-};
+if (require.main === module) {
+  ejecutarBlindajeFinal();
+}
 
-console.log(`[Maat] Iniciando proceso para blindar ${REPO}...`);
-
-const req = https.request(options, (res) => {
-  let responseData = '';
-  res.on('data', (chunk) => responseData += chunk);
-  res.on('end', () => {
-    if (res.statusCode === 200) {
-      console.log(`[Éxito] El repositorio ${REPO} es ahora privado.`);
-    } else {
-      console.error(`[Error ${res.statusCode}] Respuesta de GitHub:`, responseData);
-    }
-  });
-});
-
-req.on('error', (e) => {
-  console.error('[Error de red] No se pudo conectar a GitHub:', e.message);
-});
-
-req.write(data);
-req.end();
-
+module.exports = { ejecutarBlindajeFinal };
