@@ -20,11 +20,11 @@ switch (MODE) {
 
   case 'client':
     console.log('[DRIVE] Iniciando cliente nativo Gerrit...');
-    require('./src/gerrit/gerrit-client.js');
+    require('./src/gerrit/gerrit-client.cjs');
     break;
 
   default:
     console.warn(`[WARN] Modo '${MODE}' no reconocido. Ejecutando consulta de salud por defecto...`);
-    require('./src/gerrit/gerrit-utils.js');
+    require('./src/gerrit/gerrit-utils.cjs');
     break;
 }

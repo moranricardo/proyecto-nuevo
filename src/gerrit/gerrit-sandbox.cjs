@@ -1,11 +1,9 @@
-import { writeFile } from 'fs/promises';
+const { writeFile } = require('fs/promises');
 
-// Simulador de Endpoint de Gerrit con filtro anti-XSS y Cambios Abiertos
 async function probarConexionGerrit() {
     console.log("=== INICIANDO VALIDACIÓN DE ENTORNO LOCAL ===");
-    console.log("Modo de Ejecución: ECMAScript Modules (ESM)");
-    
-    // Simulación del payload crudo que retorna la API de Gerrit
+    console.log("Modo de Ejecución: CommonJS (CJS)");
+
     const respuestaCrudaGerrit = ")]}'\n" + JSON.stringify([
         {
             "id": "Iabc1239876543210ffffffffffffffffffffffff",
@@ -13,7 +11,7 @@ async function probarConexionGerrit() {
             "branch": "main",
             "change_id": "Iabc1239876543210",
             "subject": "Fix: Optimización de ciclos I/O en persistencia local",
-            "status": "NEW", 
+            "status": "NEW",
             "created": "2026-06-13 11:30:00.000000000",
             "updated": "2026-06-13 11:31:00.000000000",
             "labels": {
@@ -33,7 +31,7 @@ async function probarConexionGerrit() {
 
         const cambios = JSON.parse(datosLimpios);
         console.log(`✔ JSON parseado con éxito. Cambios abiertos detectados: ${cambios.length}`);
-        
+
         console.log("\nEstructura del Cambio:");
         console.log(`- ID del Cambio: ${cambios[0].change_id}`);
         console.log(`- Proyecto: ${cambios[0].project}`);
@@ -47,4 +45,8 @@ async function probarConexionGerrit() {
     }
 }
 
-probarConexionGerrit();
+if (require.main === module) {
+    probarConexionGerrit();
+}
+
+module.exports = { probarConexionGerrit };

@@ -1,9 +1,10 @@
-import http from 'http';
-import fs from 'fs/promises';
-import path from 'path';
+const http = require('http');
+const fs = require('fs/promises');
+const path = require('path');
+const settings = require('../../config/settings.json');
 
-const PORT = 8080;
-const STATE_FILE = path.join(process.cwd(), 'state.json');
+const PORT = process.env.PORT || 8080;
+const STATE_FILE = path.join(process.cwd(), settings.telemetry?.output_file || 'state.json');
 const GERRIT_ANTI_XSS = ")]}'\n";
 
 async function obtenerEstadoLocal() {
@@ -42,6 +43,10 @@ const server = http.createServer(async (req, res) => {
   res.end(JSON.stringify({ error: 'Ruta no mapeada en el middleware local' }));
 });
 
-server.listen(PORT, () => {
-  console.log(`[Sandbox] Interceptor de Gerrit activo en http://localhost:${PORT}`);
-});
+if (require.main === module) {
+  server.listen(PORT, () => {
+    console.log(`[Sandbox] Interceptor de Gerrit activo en http://localhost:${PORT}`);
+  });
+}
+
+module.exports = server;
