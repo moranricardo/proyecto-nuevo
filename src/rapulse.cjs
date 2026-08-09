@@ -2,8 +2,13 @@
 const { validarIntegridad } = require('./mantenimiento.cjs');
 const { enviarAlerta } = require('./notification_gateway.cjs');
 
-async function ejecutarPipeline() {
-  const contenidoLeccion = "Esta es una lección de prueba sobre Git. ¿Entiendes el concepto?";
+/**
+ * Ejecuta el pipeline de validación de integridad para Ra Pulse.
+ * @param {string} [textoPrueba] - Texto opcional a evaluar.
+ * @returns {Promise<boolean>}
+ */
+async function ejecutarPipeline(textoPrueba) {
+  const contenidoLeccion = textoPrueba || "Esta es una lección de prueba sobre Git. ¿Entiendes el concepto?";
 
   console.log("[RA PULSE] Iniciando validación de integridad...");
 
@@ -11,23 +16,26 @@ async function ejecutarPipeline() {
 
   if (!resultado.aprobado) {
     console.error("❌ Error de Integridad:", resultado.mensaje);
-
-    if (process.env.GMAIL_USER && process.env.ALERT_EMAIL) {
-      console.log("📧 Enviando alerta de correo...");
-      await enviarAlerta("🚨 Alerta Ra Pulse: Fallo de Integridad", `Fallo en el pipeline: ${resultado.mensaje}`);
-    }
-
-    process.exit(1);
+    console.log("📧 Procesando alerta de correo...");
+    await enviarAlerta("🚨 Alerta Ra Pulse: Fallo de Integridad", `Fallo en el pipeline: ${resultado.mensaje}`);
+    return false;
   }
 
   console.log("✅ Integridad validada con éxito. Pipeline continúa.");
-  process.exit(0);
+  return true;
 }
 
-ejecutarPipeline().catch(async (err) => {
-  console.error("💥 Error fatal en el pipeline:", err);
-  if (process.env.GMAIL_USER && process.env.ALERT_EMAIL) {
-    await enviarAlerta("🚨 Alerta Ra Pulse: Error Fatal", err.message || String(err));
-  }
-  process.exit(1);
-});
+// Ejecución directa desde CLI
+if (require.main === module) {
+  ejecutarPipeline()
+    .then((exito) => {
+      process.exit(exito ? 0 : 1);
+    })
+    .catch(async (err) => {
+      console.error("💥 Error fatal en el pipeline:", err);
+      await enviarAlerta("🚨 Alerta Ra Pulse: Error Fatal", err.message || String(err));
+      process.exit(1);
+    });
+}
+
+module.exports = { ejecutarPipeline };
