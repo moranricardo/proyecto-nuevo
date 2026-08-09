@@ -1,3 +1,7 @@
+# (Pegas el código)
+git add .github/workflows/ra_pulse_master.yml
+git commit -m "ci: optimizar ra_pulse_master con caching y bot oficial"
+git push origin main
 name: Ra Pulse Master CI
 
 on:
@@ -15,17 +19,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Checkout del código
-        uses: actions/checkout@v7
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
 
       - name: ⚙️ Configurar Node.js
-        uses: actions/setup-node@v7
+        uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: 📦 Instalar Dependencias
         run: |
-          if [ -f package.json ]; then
-            npm ci || npm install
+          if [ -f package-lock.json ]; then
+            npm ci
+          elif [ -f package.json ]; then
+            npm install
           fi
 
       - name: 🌌 Ejecutar Ra Pulse
@@ -33,8 +42,9 @@ jobs:
 
       - name: 💾 Persistir telemetría (state.json)
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action Bot"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          
           if [ -f state.json ]; then
             git add state.json
             if ! git diff --cached --quiet; then
