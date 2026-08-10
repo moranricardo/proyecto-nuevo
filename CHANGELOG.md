@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.3.0](https://github.com/moranricardo/proyecto-nuevo/compare/v1.2.0...v1.3.0) (2026-08-10)
+
+
+### Features
+
+* **config:** agregar configuracion base de TypeScript tsconfig.json ([02af730](https://github.com/moranricardo/proyecto-nuevo/commit/02af7306726eb9356673998965c2a11475217f47))
+* **config:** agregar configuracion de TSDoc tsdoc.json ([84a0584](https://github.com/moranricardo/proyecto-nuevo/commit/84a058493b57d0f690cfa3a48cfa2e253869c83d))
+* **script:** agregar script de validacion de integridad verificar.js ([7401ac6](https://github.com/moranricardo/proyecto-nuevo/commit/7401ac6d24ad0afba6147feba9ba0e6d76391e32))
+* **test:** actualizar script test_mail.js para pasarela de notificaciones ([6e45115](https://github.com/moranricardo/proyecto-nuevo/commit/6e45115d18922c5bbb03b6d418f8618223f1858e))
+* **test:** actualizar script test-bridge.js para validación de Puppeteer ([183449a](https://github.com/moranricardo/proyecto-nuevo/commit/183449af5d18f9995928669a50bc1c88154316bb))
+
 ## [1.2.0](https://github.com/moranricardo/proyecto-nuevo/compare/v1.1.0...v1.2.0) (2026-08-10)
 
 
