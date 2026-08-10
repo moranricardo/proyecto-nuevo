@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0](https://github.com/moranricardo/proyecto-nuevo/compare/v1.0.0...v1.1.0) (2026-08-10)
+
+
+### Features
+
+* **utils:** agregar cliente gerrit moderno con fetch nativo ([f0aced9](https://github.com/moranricardo/proyecto-nuevo/commit/f0aced915a39276b52e29a0f8c0db3fd1e3bd468))
+
+
+### Bug Fixes
+
+* **ci:** agregar permisos de escritura a release-please workflow ([5eff4e7](https://github.com/moranricardo/proyecto-nuevo/commit/5eff4e76ff9525e4179459a61c9aefde57a1f4cb))
+* **src:** migrar pipeline a CommonJS (.cjs) y conectar alertas ([c7b18e4](https://github.com/moranricardo/proyecto-nuevo/commit/c7b18e4876f453c39f14f5d453a55d805794c059))
+
 ## 1.0.0 (2026-08-09)
 
 
