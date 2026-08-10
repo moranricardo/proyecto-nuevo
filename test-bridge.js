@@ -20,7 +20,7 @@ async function checkBridge() {
     const page = await browser.newPage();
     console.log("Abriendo canal de telemetría...");
     await page.goto('https://httpbin.org/status/200', { waitUntil: 'domcontentloaded' });
-    
+
     console.log("🌐 Puente exitoso: Navegador Chromium operativo en Termux.");
     await browser.close();
   } catch (error) {
