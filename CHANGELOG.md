@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.2.0](https://github.com/moranricardo/proyecto-nuevo/compare/v1.1.0...v1.2.0) (2026-08-10)
+
+
+### Features
+
+* **config:** actualizar y optimizar config.json con parámetros de reintentos e intervalos ([9024abe](https://github.com/moranricardo/proyecto-nuevo/commit/9024abedc09a44aa5e7399f88511029591cfa587))
+* **core:** actualizar y proteger index.cjs con bloque try-catch ([820ef7c](https://github.com/moranricardo/proyecto-nuevo/commit/820ef7ce13d29c35fe0120571d0934637031f623))
+* **lint:** actualizar y optimizar eslint.config.mjs con la nueva configuración plana ([8b64b1c](https://github.com/moranricardo/proyecto-nuevo/commit/8b64b1c222e2a238ea27b718ddbe906031f238ef))
+* **lint:** configurar reglas para archivos de tipos .d.ts ([e743d38](https://github.com/moranricardo/proyecto-nuevo/commit/e743d38c5442d20d5cb9157535f22dd05250afc0))
+* **monitor:** agregar script monitor.sh para bucle de control Ra Pulse Pro ([10e52f0](https://github.com/moranricardo/proyecto-nuevo/commit/10e52f03585676ef93edf254a41f4dbd64bf7741))
+* **pulse:** agregar script run-pulse.sh para ejecución automatizada ([0576b5e](https://github.com/moranricardo/proyecto-nuevo/commit/0576b5e38b12196d9b5f1aab7fa29a35e8952a28))
+* **script:** poblar cleanup.sh con rutina de limpieza y optimización ([9e422b1](https://github.com/moranricardo/proyecto-nuevo/commit/9e422b1adc9034d24c93cb7db9856a8e256c1f1e))
+
+
+### Bug Fixes
+
+* **pulse:** corregir ruta del orquestador a index.cjs en la raíz ([508a1a2](https://github.com/moranricardo/proyecto-nuevo/commit/508a1a2e9da1b6a1d5b4c3fd8769e6c323fbe78a))
+
 ## [1.1.0](https://github.com/moranricardo/proyecto-nuevo/compare/v1.0.0...v1.1.0) (2026-08-10)
 
 
