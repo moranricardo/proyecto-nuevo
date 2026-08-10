@@ -1,4 +1,12 @@
-# 🌀 Puppeteer Fork: Vórtice 818
+
+# <span style="display: inline-block; animation: spin 4s linear infinite;">🌀</span> Puppeteer Fork: Vórtice 818
+
+<style>
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
 
 <div style="background: #0f172a; color: #f8fafc; padding: 30px; border-radius: 15px; border: 1px solid #3b82f6; font-family: sans-serif;">
     <h2 style="color: #60a5fa; margin-top: 0;">🚀 Dashboard Técnico de Optimización</h2>
@@ -23,7 +31,7 @@
 
 ---
 
-## 🌀 El Toroide Adiamantado (Evolución 818)
+## <span style="display: inline-block; animation: spin 4s linear infinite;">🌀</span> El Toroide Adiamantado (Evolución 818)
 
 El proyecto ha trascendido la estructura lineal. Ahora opera bajo una **Geometría Toroidal**:
 * **Flujo Auto-Sustentado:** Los datos procesados no son solo un final, sino el combustible para la siguiente fase de extracción y análisis.
