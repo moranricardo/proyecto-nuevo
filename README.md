@@ -1,4 +1,4 @@
-# 🌀 Puppeteer Fork: Vórtice 818
+# <img src="https://camo.githubusercontent.com/afdf5a3b933086604f6acf89a8fa2a321aaa6d912919c573f87545587a59333f/68747470733a2f2f74656368737461636b2d67656e657261746f722e76657263656c2e6170702f72656163742d69636f6e2e737667" width="35" style="vertical-align: middle;" /> Puppeteer Fork: Vórtice 818
 
 <div style="background: #0f172a; color: #f8fafc; padding: 30px; border-radius: 15px; border: 1px solid #3b82f6; font-family: sans-serif;">
     <h2 style="color: #60a5fa; margin-top: 0;">🚀 Dashboard Técnico de Optimización</h2>
@@ -23,7 +23,7 @@
 
 ---
 
-## 🌀 El Toroide Adiamantado (Evolución 818)
+## <img src="https://camo.githubusercontent.com/afdf5a3b933086604f6acf89a8fa2a321aaa6d912919c573f87545587a59333f/68747470733a2f2f74656368737461636b2d67656e657261746f722e76657263656c2e6170702f72656163742d69636f6e2e737667" width="30" style="vertical-align: middle;" /> El Toroide Adiamantado (Evolución 818)
 
 El proyecto ha trascendido la estructura lineal. Ahora opera bajo una **Geometría Toroidal**:
 * **Flujo Auto-Sustentado:** Los datos procesados no son solo un final, sino el combustible para la siguiente fase de extracción y análisis.
