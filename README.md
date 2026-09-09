@@ -1,34 +1,27 @@
-# <img src="https://camo.githubusercontent.com/afdf5a3b933086604f6acf89a8fa2a321aaa6d912919c573f87545587a59333f/68747470733a2f2f74656368737461636b2d67656e657261746f722e76657263656c2e6170702f72656163742d69636f6e2e737667" width="35" style="vertical-align: middle;" /> Puppeteer Fork: Vórtice 818
+# Puppeteer Fork: Vórtice 818
 
-<div style="background: #0f172a; color: #f8fafc; padding: 30px; border-radius: 15px; border: 1px solid #3b82f6; font-family: sans-serif;">
-    <h2 style="color: #60a5fa; margin-top: 0;">🚀 Dashboard Técnico de Optimización</h2>
-    <p style="font-style: italic; color: #94a3b8;">Gestión de recursos avanzada para entornos móviles (Termux) y servidores.</p>
-    
-    <div style="display: flex; gap: 15px; margin: 20px 0; flex-wrap: wrap;">
-        <div style="flex: 1; min-width: 200px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; border: 1px solid #1e293b;">
-            <strong style="color: #f472b6;">🧠 Gestión de Memoria</strong>
-            <p style="font-size: 13px; margin: 8px 0;">Uso de <code>trimcache</code> para operar de forma eficiente en dispositivos móviles y de recursos limitados.</p>
-        </div>
-        <div style="flex: 1; min-width: 200px; background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; border: 1px solid #1e293b;">
-            <strong style="color: #4ade80;">⏱️ Módulo de Espera</strong>
-            <p style="font-size: 13px; margin: 8px 0;">Algoritmo <code>Custom Wait</code> que optimiza los ciclos de CPU y reduce el consumo energético.</p>
-        </div>
-    </div>
-
-    <div style="background: rgba(59, 130, 246, 0.1); padding: 15px; border-left: 4px solid #3b82f6; border-radius: 5px;">
-        <h3 style="margin: 0; color: #93c5fd; font-size: 16px;">Core: Flujo Toroidal (Vórtice 818)</h3>
-        <p style="font-size: 13px; color: #cbd5e1;">Motor principal para el ciclo de rotación de datos, scraping intensivo y auditoría en Gerrit.</p>
-    </div>
-</div>
+> **🚀 Dashboard Técnico de Optimización**
+> *Gestión de recursos avanzada para entornos móviles (Termux) y servidores.*
 
 ---
 
-## <img src="https://camo.githubusercontent.com/afdf5a3b933086604f6acf89a8fa2a321aaa6d912919c573f87545587a59333f/68747470733a2f2f74656368737461636b2d67656e657261746f722e76657263656c2e6170702f72656163742d69636f6e2e737667" width="30" style="vertical-align: middle;" /> El Toroide Adiamantado (Evolución 818)
+### 💡 Pilares de Optimización
 
-El proyecto ha trascendido la estructura lineal. Ahora opera bajo una **Geometría Toroidal**:
-* **Flujo Auto-Sustentado:** Los datos procesados no son solo un final, sino el combustible para la siguiente fase de extracción y análisis.
-* **Vórtice de Datos:** Implementación de un bucle de retroalimentación donde el análisis de sentimiento previo calibra los filtros del nuevo ciclo.
-* **Punto Cero (0/0):** El momento en que el script libera la memoria (`TrimCache`) y se prepara para el siguiente pulso toroidal de manera asíncrona.
+* **🧠 Gestión de Memoria:** Uso de `trimcache` para operar de forma eficiente en dispositivos móviles y de recursos limitados.
+* **⏱️ Módulo de Espera:** Algoritmo *Custom Wait* que optimiza los ciclos de CPU y reduce el consumo energético.
+
+> **Core: Flujo Toroidal (Vórtice 818)**
+> Motor principal para el ciclo de rotación de datos, scraping intensivo y auditoría en Gerrit.
+
+---
+
+## 🌀 El Toroide Adiamantado (Evolución 818)
+
+El proyecto opera bajo una **Geometría Toroidal**:
+
+* **Flujo Auto-Sustentado:** Los datos procesados sirven como combustible para la siguiente fase de extracción y análisis.
+* **Vórtice de Datos:** Bucle de retroalimentación donde el análisis de sentimiento previo calibra los filtros del nuevo ciclo.
+* **Punto Cero (0/0):** Liberación asíncrona de memoria (`TrimCache`) previa al siguiente pulso toroidal.
 
 ---
 
@@ -38,7 +31,7 @@ El proyecto ha trascendido la estructura lineal. Ahora opera bajo una **Geometr�
 # 1. Instalar dependencias del sistema y navegador
 pkg update && pkg install nodejs chromium git -y
 
-# 2. Clonar o actualizar el repositorio
+# 2. Actualizar el repositorio
 git pull origin main
 
 # 3. Instalar dependencias del monorepo
@@ -52,7 +45,8 @@ node index.cjs
 
 ## 📦 Arquitectura del Monorepo
 
-Este proyecto está estructurado bajo un modelo de paquetes integrados gestionados mediante **Release Please**:
+Estructurado bajo un modelo de paquetes integrados gestionados mediante **Release Please**:
+
 * `.` (Raíz / Orquestador general)
 * `packages/puppeteer`
 * `packages/puppeteer-core`
