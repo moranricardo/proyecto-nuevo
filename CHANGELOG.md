@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.4.0](https://github.com/moranricardo/proyecto-nuevo/compare/v1.3.0...v1.4.0) (2026-09-13)
+
+
+### Features
+
+* implementar flujo toroidal basico con integracion gerrit ([9e9a8fe](https://github.com/moranricardo/proyecto-nuevo/commit/9e9a8fea2c0d5d8c3eaa9151f1235c2c9b5d4b21))
+* **notification:** añade soporte para contenido HTML en el gateway de correo ([a35518d](https://github.com/moranricardo/proyecto-nuevo/commit/a35518d1c51841dc4cb44ee1ef16b4efee567c45))
+
+
+### Bug Fixes
+
+* **deps:** actualiza nodemailer a 10.0.9 para resolver vulnerabilidad de seguridad ([eda32ab](https://github.com/moranricardo/proyecto-nuevo/commit/eda32abbbb4f64e01043f85fff831c1cf444aef6))
+* **deps:** sincroniza package-lock.json con package.json ([c6ab9e5](https://github.com/moranricardo/proyecto-nuevo/commit/c6ab9e528e2e4717290dd824c8a8de701748ea14))
+* **scripts:** corrige ruta gerrit_test y remueve referencia a plataforma ([c042c1e](https://github.com/moranricardo/proyecto-nuevo/commit/c042c1eb27fdadca92a10e080ebd54116697d6ee))
+
 ## [1.3.0](https://github.com/moranricardo/proyecto-nuevo/compare/v1.2.0...v1.3.0) (2026-08-10)
 
 
