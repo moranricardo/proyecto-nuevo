@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.0 (2026-09-13)
+
+
+### Features
+
+* estructura inicial del monorepo con workspaces y orquestador ([4e72ab4](https://github.com/moranricardo/proyecto-nuevo/commit/4e72ab40c178af1d30ab93e0891fe6953cd124aa))
+
 ## [1.3.0](https://github.com/moranricardo/proyecto-nuevo/compare/v1.2.0...v1.3.0) (2026-08-10)
 
 
