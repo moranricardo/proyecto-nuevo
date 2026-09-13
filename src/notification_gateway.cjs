@@ -21,28 +21,35 @@ function obtenerTransporter() {
 /**
  * Envía una alerta por correo electrónico usando Nodemailer.
  * @param {string} asunto - Asunto del correo.
- * @param {string} mensaje - Cuerpo del mensaje.
+ * @param {string} mensaje - Cuerpo del mensaje (texto plano).
+ * @param {string} [htmlMensaje] - Cuerpo del mensaje en formato HTML opcional.
  * @returns {Promise<boolean>}
  */
-async function enviarAlerta(asunto, mensaje) {
+async function enviarAlerta(asunto, mensaje, htmlMensaje = null) {
   const user = process.env.GMAIL_USER;
   const destinatario = process.env.ALERT_EMAIL || user;
   const transporter = obtenerTransporter();
 
   // Modo Simulado (Dry-Run / Dev Local sin credenciales)
   if (!transporter || !destinatario) {
-    console.warn("⚠️ [Notification Gateway] Modulo en MODO SIMULACIÓN. Omitiendo envío real (Variables de entorno no configuradas).");
+    console.warn("⚠️ [Notification Gateway] Módulo en MODO SIMULACIÓN. Omitiendo envío real (Variables de entorno no configuradas).");
     console.log(`📩 [Simulación] Para: ${destinatario || 'no-definido'} | Asunto: "${asunto}" | Mensaje: "${mensaje}"`);
     return true;
   }
 
   try {
-    await transporter.sendMail({
+    const mailOptions = {
       from: `"Ra Pulse" <${user}>`,
       to: destinatario,
       subject: asunto,
       text: mensaje
-    });
+    };
+
+    if (htmlMensaje) {
+      mailOptions.html = htmlMensaje;
+    }
+
+    await transporter.sendMail(mailOptions);
     console.log("✅ [Notification Gateway] Correo enviado exitosamente.");
     return true;
   } catch (error) {
@@ -53,8 +60,11 @@ async function enviarAlerta(asunto, mensaje) {
 
 // Bloque de prueba local al ejecutar directamente el script
 if (require.main === module) {
-  enviarAlerta("Prueba de Notificación - Ra Pulse", "Este es un mensaje de prueba de integridad del servicio.")
-    .then(resultado => console.log("🧪 Estado del envío:", resultado));
+  enviarAlerta(
+    "Prueba de Notificación - Ra Pulse", 
+    "Este es un mensaje de prueba de integridad del servicio.",
+    "<h3>Ra Pulse</h3><p>Este es un mensaje de prueba de integridad del servicio en formato <b>HTML</b>.</p>"
+  ).then(resultado => console.log("🧪 Estado del envío:", resultado));
 }
 
 module.exports = { enviarAlerta };
