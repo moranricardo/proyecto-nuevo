@@ -1,18 +1,18 @@
 {
   "name": "proyecto-nuevo",
   "version": "1.3.0",
-  "description": "Orquestador Ra Pulse y Suite Gerrit para Termux y GitHub Actions",
+  "description": "Orquestador Ra Pulse y Suite Gerrit con ejecucion agnostica",
   "main": "index.cjs",
   "type": "module",
   "scripts": {
     "start": "node index.cjs",
     "pulse": "node index.cjs pulse",
     "client": "node index.cjs client",
-    "sandbox": "node src/gerrit/gerrit-sandbox.cjs",
-    "test": "node index.cjs && node index.cjs pulse && node src/gerrit/gerrit-sandbox.cjs"
+    "sandbox": "node scripts/gerrit_test.cjs",
+    "test": "node index.cjs && node index.cjs pulse && node scripts/gerrit_test.cjs"
   },
   "keywords": [],
-  "author": "",
+  "author": "Ricardo Moran Maldonado",
   "license": "ISC",
   "dependencies": {
     "nodemailer": "^6.9.16"
