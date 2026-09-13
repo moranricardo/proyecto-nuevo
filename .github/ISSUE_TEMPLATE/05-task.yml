@@ -1,0 +1,19 @@
+name: Tarea Interna (Task)
+description: Seguimiento de tareas de mantenimiento para el equipo
+title: '[Task]: '
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### Uso para mantenimiento y tareas internas de proyecto-nuevo
+        Utiliza esta plantilla para dar seguimiento a pequeñas tareas de refactorización, limpieza o mantenimiento interno.
+  - type: textarea
+    id: tarea
+    attributes:
+      label: Descripción de la tarea
+      description: Detalla las acciones o refactorizaciones a realizar.
+      placeholder: |
+        - [ ] Limpiar dependencias
+        - [ ] Actualizar documentación
+    validations:
+      required: true

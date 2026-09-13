@@ -1,0 +1,25 @@
+{
+  "release-type": "node",
+  "packages": {
+    ".": {
+      "release-type": "node",
+      "component": "root"
+    },
+    "packages/puppeteer": {
+      "release-type": "node",
+      "component": "puppeteer"
+    },
+    "packages/puppeteer-core": {
+      "release-type": "node",
+      "component": "puppeteer-core"
+    },
+    "packages/ng-schematics": {
+      "release-type": "node",
+      "component": "ng-schematics"
+    },
+    "packages/browsers": {
+      "release-type": "node",
+      "component": "browsers"
+    }
+  }
+}
