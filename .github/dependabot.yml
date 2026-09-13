@@ -1,0 +1,25 @@
+version: 2
+updates:
+  # 1. Actualizaciones para GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "04:00"
+    groups:
+      github-actions-dependencies:
+        patterns:
+          - "*"
+
+  # 2. Actualizaciones para dependencias de Node.js (npm)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "04:00"
+    groups:
+      npm-dependencies:
+        patterns:
+          - "*"

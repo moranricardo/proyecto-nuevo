@@ -1,0 +1,16 @@
+{
+  "gerrit": {
+    "baseUrl": "https://review.lineageos.org",
+    "query": "status:open project:LineageOS/android_kernel_qcom_sm8350",
+    "timeout": 10000,
+    "retries": 3,
+    "limit": 10
+  },
+  "pulse": {
+    "stateFile": "./state.json",
+    "environment": "production",
+    "notifyOnChange": true,
+    "pollInterval": 300000,
+    "logLevel": "info"
+  }
+}

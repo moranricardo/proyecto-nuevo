@@ -1,0 +1,10 @@
+25d266fc941319d9a8aa658c07f3b311c58ff359 commit	refs/heads/main
+25d266fc941319d9a8aa658c07f3b311c58ff359 commit	refs/remotes/origin/HEAD
+79fa0e704f208cdd2fbf3247b345cd670c426122 commit	refs/remotes/origin/dependabot/npm_and_yarn/npm-dependencies-217f3864fb
+25d266fc941319d9a8aa658c07f3b311c58ff359 commit	refs/remotes/origin/main
+0f812dea3957590d36b99515c4327533867011d9 commit	refs/remotes/origin/release-please--branches--main--components--proyecto-nuevo
+259bdfb618007e1f78771987e8720f629d20f90c commit	refs/stash
+2a2079e97204c5d07cd9f0fddf8fd7d957d196f2 commit	refs/tags/v1.0.0
+32c8ae468d11bf36112a95cd6359786e390192f5 commit	refs/tags/v1.1.0
+a63fda28b310a97eda58dd57bc395e5e06c7562d commit	refs/tags/v1.2.0
+5dad0feb25e15e9f52191dd06bdb8f768f483b0b commit	refs/tags/v1.3.0

@@ -1,0 +1,20 @@
+{
+  "gerrit": {
+    "url": "https://review.lineageos.org",
+    "project": "LineageOS/android_device_mainline_generic",
+    "branch": "main",
+    "query_limit": 10
+  },
+  "polling": {
+    "interval_ms": 30000,
+    "enabled": true
+  },
+  "telemetry": {
+    "save_state": true,
+    "output_file": "state.json"
+  },
+  "logging": {
+    "level": "info",
+    "debug": false
+  }
+}
